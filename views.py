@@ -23,6 +23,7 @@ class MainWindow(Frame):
         self.btn_search = ttk.Button(self, text='Buscar', command=self.on_btn_search_click)
         # binding
         self.bind_all("<Alt-KeyRelease-y>", self.on_btn_y_click)
+        self.subscribe()
         # placing
         self.lbl_search.grid(row=0, column=0)
         self.en_serch.grid(row=0, column=1, sticky='nsew')
@@ -30,7 +31,6 @@ class MainWindow(Frame):
         self.btn_search.grid(row=0, column=3)
         # table
         self.make_treeview()
-        self.subscribe()
 
     def make_treeview(self):
         self.vsb = ttk.Scrollbar(self)
@@ -66,9 +66,10 @@ class MainWindow(Frame):
         pub.sendMessage("btn_y_clicked")
 
     def write_y_letter(self, event=None):
-        data = self.en_serch.get()
-        self.en_serch.insert(INSERT, 'ỹ')
         self.en_serch.focus()
+        self.en_serch.insert(INSERT, 'ỹ')
+        data = self.en_serch.get()
+        print(data)
         pub.sendMessage("letter_inserted", data=data)
 
     def subscribe(self):

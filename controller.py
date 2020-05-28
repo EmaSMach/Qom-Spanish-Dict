@@ -15,6 +15,7 @@ class Controller:
         self.show_all()
 
     def show_all(self):
+        self.view.clear_table()
         objs = session.query(self.model).all()
         for obj in objs:
             elements = [el if el else '' for el in obj.to_list()]
@@ -24,11 +25,14 @@ class Controller:
         self.view.show()
 
     def search(self, data):
-        objs = session.query(self.model).filter(self.model.qom.like(f"{data}%")).all()
-        self.view.update_table(obj.to_list() for obj in objs)
+        objs = session.query(self.model).filter(self.model.qom.like(f"{data}%")).limit(100)
+        self.view.update_table([el if el else '' for el in obj.to_list()] for obj in objs)
 
     def update_table(self, data):
-        self.search(data)
+        if data:
+            self.search(data)
+        else:
+            self.show_all()
 
 
 def main():
