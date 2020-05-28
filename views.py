@@ -10,9 +10,16 @@ class MainWindow(Frame):
         self.master.title("Diccionario Qom - Español")
         self.master.state('zoomed')
         self.pack(expand=YES, fill=BOTH)
-        self.table = ttk.Treeview(self)
+        self.table = ttk.Treeview(self, style="mystyle.Treeview")
         self.make_widgets()
         self.make_flowable()
+
+        style = ttk.Style()
+        style.configure("mystyle.Treeview", highlightthickness=0, bd=0,
+                        font=('Calibri', 14))  # Modify the font of the body
+        style.configure("mystyle.Treeview.Heading", font=('Calibri', 13, 'bold'))  # Modify the font of the headings
+        style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
+        style.configure("mystyle.Treeview", rowheight=25)
 
     def make_widgets(self):
         self.lbl_search = ttk.Label(self, text="Búsqueda:")
@@ -22,7 +29,7 @@ class MainWindow(Frame):
         self.btn_y = ttk.Button(self, text='ỹ', width=3, command=self.on_btn_y_click)
         self.btn_search = ttk.Button(self, text='Buscar', command=self.on_btn_search_click)
         # binding
-        self.bind_all("<Alt-KeyRelease-y>", self.on_btn_y_click)
+        self.bind_all("<Alt-KeyRelease-y>", lambda x: self.btn_y.invoke())
         self.subscribe()
         # placing
         self.lbl_search.grid(row=0, column=0)
@@ -41,7 +48,11 @@ class MainWindow(Frame):
         columns = ('id', 'qom', 'dfs', 'syn', 'var', 'see',)
         self.table.config(columns=columns, show='headings')
         # columns configs
-        self.table.column('id', width=4)
+        self.table.column('id', width=2)
+        self.table.column('see', width=2)
+        # self.table.column('var', width=2)
+        # self.table.column('qom', width=4)
+        self.table.column('dfs', width=200)
         # headings configs
         self.table.heading('id', text='Id')
         self.table.heading('qom', text='Qom')
@@ -62,7 +73,7 @@ class MainWindow(Frame):
         data = self.en_search.get()
         pub.sendMessage("btn_search_clicked", data=data)
 
-    def on_btn_y_click(self):  # event=None):
+    def on_btn_y_click(self, event=None):
         pub.sendMessage("btn_y_clicked")
 
     def write_y_letter(self):  # event=None):
