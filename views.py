@@ -16,9 +16,9 @@ class MainWindow(Frame):
 
     def make_widgets(self):
         self.lbl_search = ttk.Label(self, text="Búsqueda:")
-        self.en_serch = ttk.Entry(self)
-        self.en_serch.bind("<KeyRelease>", self.on_key_release)
-        self.en_serch.focus()
+        self.en_search = ttk.Entry(self)
+        self.en_search.bind("<KeyRelease>", self.on_key_release)
+        self.en_search.focus()
         self.btn_y = ttk.Button(self, text='ỹ', width=3, command=self.on_btn_y_click)
         self.btn_search = ttk.Button(self, text='Buscar', command=self.on_btn_search_click)
         # binding
@@ -26,7 +26,7 @@ class MainWindow(Frame):
         self.subscribe()
         # placing
         self.lbl_search.grid(row=0, column=0)
-        self.en_serch.grid(row=0, column=1, sticky='nsew')
+        self.en_search.grid(row=0, column=1, sticky='nsew')
         self.btn_y.grid(row=0, column=2)
         self.btn_search.grid(row=0, column=3)
         # table
@@ -55,21 +55,20 @@ class MainWindow(Frame):
         self.columnconfigure(1, weight=1)
 
     def on_key_release(self, event=None):
-        data = self.en_serch.get()
+        data = self.en_search.get()
         pub.sendMessage("key_released", data=data)
 
     def on_btn_search_click(self):
-        data = self.en_serch.get()
+        data = self.en_search.get()
         pub.sendMessage("btn_search_clicked", data=data)
 
-    def on_btn_y_click(self, event=None):
+    def on_btn_y_click(self):  # event=None):
         pub.sendMessage("btn_y_clicked")
 
-    def write_y_letter(self, event=None):
-        self.en_serch.focus()
-        self.en_serch.insert(INSERT, 'ỹ')
-        data = self.en_serch.get()
-        print(data)
+    def write_y_letter(self):  # event=None):
+        self.en_search.insert(INSERT, 'ỹ')
+        self.en_search.focus()
+        data = self.en_search.get()
         pub.sendMessage("letter_inserted", data=data)
 
     def subscribe(self):

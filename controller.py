@@ -27,6 +27,7 @@ class Controller:
     def search(self, data):
         objs = session.query(self.model).filter(self.model.qom.like(f"{data}%")).limit(100)
         self.view.update_table([el if el else '' for el in obj.to_list()] for obj in objs)
+        # TODO add pagination
 
     def update_table(self, data):
         if data:
