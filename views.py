@@ -25,6 +25,12 @@ class MainWindow(Frame):
         style.configure("mystyle.Treeview.Item", padding=0, indicatormargins=3, indicatorsize=50)
         style.configure("mystyle.Treeview.Cell", padding=1)
         style.configure("mystyle.Treeview", fieldbackground="red")
+        # other styles
+        style.configure("TButton", font=('Calibri', 22, 'bold'))
+        style.configure("TLabel", font=('Calibri', 22, 'bold'))
+        for child in self.winfo_children():
+            if isinstance(child, ttk.Entry):
+                child.configure(font=('Calibri', 22, 'bold'))
 
     def make_widgets(self):
         self.lbl_search = ttk.Label(self, text="Búsqueda:")

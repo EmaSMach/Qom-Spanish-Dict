@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter.scrolledtext import ScrolledText
 
 
 class WordForm(Toplevel):
@@ -7,15 +8,33 @@ class WordForm(Toplevel):
         super().__init__(*args, **kwargs)
         #self.pack(expand=YES, fill=BOTH)
         self.word = word
-        self.master.title(f"Palabra - {self.word}")
+        self.title(f"Palabra - {self.word.qom.capitalize()}")
+        self.geometry('600x500')
         self.columnconfigure(1, weight=1)
         self.rowconfigure(1, weight=1)
         self.make_widgets()
         self.fill_widgets()
+        self.add_style()
+        self.add_optional_style()
         self.grab_set()
-        self.transient(self.master)
+        # self.transient(self.master)
         self.focus()
         self.wait_window(self)
+
+    def add_optional_style(self):
+        for child in self.winfo_children():
+            if isinstance(child, ttk.Entry):
+                child.configure(state='readonly')
+                child.configure(font=('Cambria', 22, 'italic'))
+            self.txt_dfs.config(font=('Cambria', 18))
+            self.txt_dfs.configure(state='disabled')
+
+                    #child.configure(font=('Cambria', 22, 'italic'))
+
+    def add_style(self):
+        self.style = ttk.Style(self)
+        self.style.configure("self.TLabel", font=('Calibri', 22, 'italic'))
+        # self.style.configure("this.TButton", font=('Calibri', 22, 'italic'))
 
     def make_widgets(self):
         self.lbl_qom = ttk.Label(self, text='Qom:')
@@ -24,7 +43,7 @@ class WordForm(Toplevel):
         self.ent_qom.grid(row=0, column=1, sticky='ew')
         self.lbl_dfs = ttk.Label(self, text='Definición:')
         self.lbl_dfs.grid(row=1, column=0)
-        self.txt_dfs = Text(self, wrap='word')
+        self.txt_dfs = ScrolledText(self, wrap='word')
         self.txt_dfs.grid(row=1, column=1, sticky='nsew')
         self.lbl_syn = ttk.Label(self, text='Sinónimo:')
         self.lbl_syn.grid(row=2, column=0)
