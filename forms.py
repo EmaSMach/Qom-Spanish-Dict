@@ -2,18 +2,20 @@ from tkinter import *
 from tkinter import ttk
 
 
-class WordForm(Frame):
+class WordForm(Toplevel):
     def __init__(self, *args, word, **kwargs):
         super().__init__(*args, **kwargs)
-        self.pack(expand=YES, fill=BOTH)
+        #self.pack(expand=YES, fill=BOTH)
         self.word = word
         self.master.title(f"Palabra - {self.word}")
         self.columnconfigure(1, weight=1)
         self.rowconfigure(1, weight=1)
         self.make_widgets()
         self.fill_widgets()
-        self.master.transient()
-        self.master.wait_window(self)
+        self.grab_set()
+        self.transient(self.master)
+        self.focus()
+        self.wait_window(self)
 
     def make_widgets(self):
         self.lbl_qom = ttk.Label(self, text='Qom:')

@@ -3,6 +3,8 @@ from tkinter import ttk
 
 from pubsub import pub
 
+from forms import WordForm
+
 
 class MainWindow(Frame):
     def __init__(self, *args, **kwargs):
@@ -23,7 +25,6 @@ class MainWindow(Frame):
         style.configure("mystyle.Treeview.Item", padding=0, indicatormargins=3, indicatorsize=50)
         style.configure("mystyle.Treeview.Cell", padding=1)
         style.configure("mystyle.Treeview", fieldbackground="red")
-
 
     def make_widgets(self):
         self.lbl_search = ttk.Label(self, text="Búsqueda:")
@@ -64,6 +65,9 @@ class MainWindow(Frame):
         self.table.heading('syn', text='Sinónimos')
         self.table.heading('var', text='Variante / Variación ')
         self.table.heading('see', text='Ver')
+        # binding tree actions
+        self.table.bind('<<TreeviewOpen>>', self.on_item_dclick)
+        self.table.bind('<<TreeviewClose>>', self.on_item_dclick)
 
     def make_flowable(self):
         self.rowconfigure(1, weight=1)
@@ -99,6 +103,10 @@ class MainWindow(Frame):
         self.clear_table()
         for register in data:
             self.table.insert(index=END, parent='', values=register)
+
+    def on_item_dclick(self, event=None):
+        selected_id = self.table.item(self.table.selection()[0])['values'][0]
+        pub.sendMessage("item_dclicked", word_id=selected_id)
 
 
 def main():

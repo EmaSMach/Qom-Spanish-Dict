@@ -1,8 +1,12 @@
+from tkinter import END
+import gc
+
+from pubsub import pub
+
 from views import MainWindow
 from models import Word
 from db import session
-from tkinter import END
-from pubsub import pub
+from forms import WordForm
 
 
 class Controller:
@@ -12,6 +16,7 @@ class Controller:
         pub.subscribe(self.search, "btn_search_clicked")
         pub.subscribe(self.update_table, "key_released")
         pub.subscribe(self.update_table, "letter_inserted")
+        pub.subscribe(self.show_word_details, "item_dclicked")
         self.show_all()
 
     def show_all(self):
@@ -34,6 +39,11 @@ class Controller:
             self.search(data)
         else:
             self.show_all()
+
+    def show_word_details(self, word_id):
+        word = session.query(self.model).filter_by(id=word_id).first()
+        form = WordForm(word=word)
+        gc.collect()
 
 
 def main():
