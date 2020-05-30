@@ -17,9 +17,13 @@ class MainWindow(Frame):
         style = ttk.Style()
         style.configure("mystyle.Treeview", highlightthickness=0, bd=0,
                         font=('Calibri', 14))  # Modify the font of the body
-        style.configure("mystyle.Treeview.Heading", font=('Calibri', 13, 'bold'))  # Modify the font of the headings
+        style.configure("mystyle.Treeview.Heading", font=('Calibri', 13, 'bold'), background='black')  # Modify the font of the headings
         style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
         style.configure("mystyle.Treeview", rowheight=25)
+        style.configure("mystyle.Treeview.Item", padding=0, indicatormargins=3, indicatorsize=50)
+        style.configure("mystyle.Treeview.Cell", padding=1)
+        style.configure("mystyle.Treeview", fieldbackground="red")
+
 
     def make_widgets(self):
         self.lbl_search = ttk.Label(self, text="Búsqueda:")
